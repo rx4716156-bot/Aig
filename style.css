@@ -1,0 +1,35 @@
+*, ::before, ::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100
+  background-color: #1a1a2e;
+  font-family: Arial, sans-serif;
+}
+
+#micBtn {
+  width: 60
+  height: 60
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff2d55, #af52de, #5856d6, #007aff);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(175, 82, 222, 0.6);
+  animation: siriPulse 2s infinite alternate;
+}
+
+    siriPulse {
+  0% {
+    box-shadow: 0 0 15 (255, 45, 85, 0.5);
+    transform: (1);
+  }
+  100% {
+    box-shadow: 0 0 25px rgba(0, 122, 255, 0.8);
+    transform: scale(1.05);
+  }
+}
