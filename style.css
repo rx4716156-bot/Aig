@@ -13,8 +13,8 @@ body {
 }
 
 #micBtn {
-  width: 60
-  height: 60
+  width: 60px
+  height: 60px
   border-radius: 50%;
   background: linear-gradient(135deg, #ff2d55, #af52de, #5856d6, #007aff);
   border: none;
