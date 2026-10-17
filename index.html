@@ -1,15 +1,167 @@
 <!DOCTYPE html>
 <html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Assistant</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    
-    <button id="micBtn"></button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Chatbot</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        display: flex;
+        height: 100vh;
+        background-color: #111827;
+        color: white;
+      }
+      .sidebar {
+        width: 260px;
+        background-color: #1f2937;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+      }
+      .new-chat-btn {
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+      }
+      .chat-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .chat-box {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+      }
+      .input-area {
+        padding: 20px;
+        background-color: #1f2937;
+        display: flex;
+        gap: 10px;
+      }
+      input {
+        flex: 1;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #374151;
+        background-color: #374151;
+        color: white;
+      }
+      button {
+        padding: 12px 20px;
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .message {
+        margin-bottom: 20px;
+        display: flex;
+      }
+      .message.user {
+        justify-content: flex-end;
+      }
+      .bubble {
+        padding: 12px;
+        border-radius: 8px;
+        max-width: 70%;
+      }
+      .message.user .bubble {
+        background-color: #2563eb;
+      }
+      .message.assistant .bubble {
+        background-color: #374151;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <button class="new-chat-btn" onclick="location.reload()">
+        + New Chat
+      </button>
+    </div>
+    <div class="chat-main">
+      <div class="chat-box" id="chatBox"></div>
+      <div class="input-area">
+        <input
+          type="text"
+          id="userInput"
+          placeholder="Message likhein..."
+          onkeypress="handleKeyPress(event)"
+        />
+        <button id="sendBtn" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
 
-    <script src="game.js"></script>
-</body>
+    <script>
+      let messages = [];
+
+      function handleKeyPress(e) {
+        if (e.key === "Enter") sendMessage();
+      }
+
+      async function sendMessage() {
+        const userInput = document.getElementById("userInput");
+        const chatBox = document.getElementById("chatBox");
+        const sendBtn = document.getElementById("sendBtn");
+        const text = userInput.value.trim();
+
+        if (!text) return;
+
+        messages.push({ role: "user", content: text });
+        addMessageToScreen("user", text);
+
+        userInput.value = "";
+        sendBtn.disabled = true;
+        userInput.disabled = true;
+
+        const typingMessage = addMessageToScreen("assistant", "Al soch raha hai...");
+
+        try {
+          const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ messages }),
+          });
+
+          typingMessage.remove();
+
+          if (!response.ok) throw new Error("Kuch error aaya.");
+
+          const data = await response.json();
+          messages.push({ role: "assistant", content: data.reply });
+          addMessageToScreen("assistant", data.reply);
+        } catch (error) {
+          typingMessage.remove();
+          addMessageToScreen("assistant", "Error: " + error.message);
+        } finally {
+          sendBtn.disabled = false;
+          userInput.disabled = false;
+          userInput.focus();
+        }
+      }
+
+      function addMessageToScreen(role, content) {
+        const chatBox = document.getElementById("chatBox");
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${role}`;
+
+        const bubble = document.createElement("div");
+        bubble.className = "bubble";
+        bubble.innerText = content;
+
+        messageDiv.appendChild(bubble);
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return messageDiv;
+      }
+    </script>
+  </body>
 </html>
