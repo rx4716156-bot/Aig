@@ -90,22 +90,33 @@
     <div class="chat-main">
       <div class="chat-box" id="chatBox"></div>
       <div class="input-area">
-        <input
-          type="text"
-          id="userInput"
-          placeholder="Message likhein..."
-          onkeypress="handleKeyPress(event)"
-        />
-        <button id="sendBtn" onclick="sendMessage()">Send</button>
-      </div>
-    </div>
+        <div class="input-area">
+  <input type="text" id="userInput" placeholder="Message likhein..." onkeypress="handleKeyPress(event)" />
+  <button id="micBtn" onclick="startSpeechRecognition()">🎤</button>
+  <button id="sendBtn" onclick="sendMessage()">Send</button>
+        </div>
 
     <script>
       let messages = [];
 
       function handleKeyPress(e) {
         if (e.key === "Enter") sendMessage();
-      }
+      }const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+
+recognition.lang = 'hi-IN';
+recognition.continuous = false;
+recognition.interimResults = false;
+
+recognition.onresult = function(event) {
+    const transcript = event.results[0][0].transcript;
+    document.getElementById('userInput').value = transcript;
+};
+
+function startSpeechRecognition() {
+    recognition.start();
+}
+      
 
       async function sendMessage() {
         const userInput = document.getElementById("userInput");
