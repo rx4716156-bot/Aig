@@ -1,35 +1,26 @@
-*, ::before, ::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh}
-  background-color: #1a1a2e;
-  font-family: Arial, sans-serif;
-}
-
 #micBtn {
-  width: 90px}
-  height: 90px}
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ff2d55, #af52de, #5856d6, #007aff);
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #007aff, #00c6ff);
   border: none;
+  border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 0 20px rgba(175, 82, 222, 0.6);
-  animation: siriPulse 2s infinite alternate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 122, 255, 0.4);
+  transition: transform 0.2s ease;
 }
 
-    siriPulse {
-  0% {
-    box-shadow: 0 0 15 (255, 45, 85, 0.5);
-    transform: (1);
-  }
-  100% {
-    box-shadow: 0 0 25px rgba(0, 122, 255, 0.8);
-    transform: scale(1.05);
-  }
+#micBtn:hover {
+  transform: scale(1.05);
+}
+
+.voice-icon {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"></path></svg>') no-repeat center;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"></path></svg>') no-repeat center;
 }
